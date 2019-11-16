@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <title>VueJS</title>
+  </head>
+  <body>
+    
+
+    <div class="container" id="app">
+        <div class="col-md-12">
+                <h3 v-bind:class="greenColor">{{ title }}</h3>
+
+                <p v-if="show">{{ message }}</p>
+
+                <button class="btn btn-primary" v-on:click="hideUser()">Hide Message</button>
+                <button class="btn btn-success" @click="showUser()">Show Message</button>
+
+                <table class="table table-bordered mt-3">
+                    <tr>
+                        <td>ID</td>
+                        <td>Name</td>
+                        <td>Email</td>
+                    </tr>
+                    <tr v-for="user in users">
+                        <td>{{user.id}}</td>
+                        <td>{{user.name}}</td>
+                        <td>{{user.email}}</td>
+                    </tr>
+                </table>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                title: 'All Users',
+                greenColor: 'text-success',
+                message: 'Hello VueJS',
+                show: true,
+                users: []
+            },
+            methods: {
+                getAllUser() {
+                    axios.get('http://localhost:3000/api.php')
+                    .then(res => this.users = res.data)
+                    .catch(err => console.log(err))
+                },
+                showUser() {
+                    this.show = true;
+                },
+                hideUser() {
+                    this.show = false;
+                }
+            },
+            created() {
+                this.getAllUser();
+            }
+        })
+    </script>
+  </body>
+</html>
